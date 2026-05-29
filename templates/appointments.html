@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="header">
+    <h1>Appointment Management</h1>
+</div>
+
+<div class="card">
+    <h2>Book New Appointment</h2>
+    <form action="{{ url_for('appointments') }}" method="POST">
+        <div class="form-grid">
+            <div class="input-group">
+                <label>Select Patient</label>
+                <select name="patient_id" required>
+                    {% for p in patients %}
+                    <option value="{{ p.patient_id }}">{{ p.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Select Doctor</label>
+                <select name="doctor_id" required>
+                    {% for d in doctors %}
+                    <option value="{{ d.doctor_id }}">{{ d.name }} ({{ d.specialization }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Date</label>
+                <input type="date" name="date" required>
+            </div>
+            <div class="input-group" style="justify-content: flex-end;">
+                <button type="submit" class="btn btn-primary">Book Now</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <h2>All Appointments</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in appointments %}
+                <tr>
+                    <td>#{{ a.appointment_id }}</td>
+                    <td>{{ a.p_name }}</td>
+                    <td>{{ a.d_name }}</td>
+                    <td>{{ a.appointment_date }}</td>
+                    <td>
+                        <a href="{{ url_for('delete_appointment', id=a.appointment_id) }}" class="btn btn-danger" style="text-decoration: none; padding: 0.5rem 1rem;">Cancel</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
